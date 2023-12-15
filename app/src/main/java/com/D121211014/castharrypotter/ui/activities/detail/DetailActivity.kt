@@ -6,6 +6,7 @@ import android.os.PersistableBundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,7 +21,11 @@ import androidx.compose.runtime.rememberCompositionContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.D121211014.castharrypotter.R
@@ -53,6 +58,7 @@ class DetailActivity : ComponentActivity() {
                 .fillMaxSize()
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
+
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(context = LocalContext.current)
@@ -65,13 +71,28 @@ class DetailActivity : ComponentActivity() {
                     .width(400.dp)
                     .height(600.dp),
                 )
+            Spacer(modifier = Modifier.height(20.dp))
 
             //title
-            Text(text = selectedCharacter?.tags.toString())
+            Text(text = selectedCharacter?.tags.toString(),
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily.Monospace,
+                fontSize = 20.sp,
+                )
+            Spacer(modifier = Modifier.height(10.dp))
+
+
             //desc
-            Text(text = selectedCharacter?.likes.toString())
+            Text(text = "Suka: ${selectedCharacter?.likes.toString()}")
+            Spacer(modifier = Modifier.height(10.dp))
             //content
-            Text(text = selectedCharacter?.views.toString())
+            Text(text = "Views: ${selectedCharacter?.views.toString()}")
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "URL: ${selectedCharacter?.previewURL.toString()}")
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "Collection: ${selectedCharacter?.collections.toString()}")
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "Download: ${selectedCharacter?.downloads.toString()}")
         }
     }
 //    override fun onCreate(savedInstanceState: Bundle?) {

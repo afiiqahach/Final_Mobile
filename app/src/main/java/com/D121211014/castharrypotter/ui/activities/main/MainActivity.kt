@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,11 +55,13 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Column {
                         CenterAlignedTopAppBar(
-                            modifier = Modifier.background(Color.Cyan),
+                            modifier = Modifier
+                                .background(Color.Cyan),
                             title = {
                                 Text(
                                     text = "CHARACTER HARRY POTTER",
-                                    fontWeight = FontWeight.Bold
+                                    fontWeight = FontWeight.Bold,
+
                                 )
                             }
                         )
@@ -79,16 +83,21 @@ class MainActivity : ComponentActivity() {
             when(mainUiState) {
                 is MainUiState.Success -> ListCharacter(mainUiState.character)
                 is MainUiState.Error -> Text(text = "Error", fontSize = 15.sp)
-                is MainUiState.Loading ->  Text(text = "Sedang Loading", fontSize = 15.sp)
+                is MainUiState.Loading ->  Text(text = "Loading...", fontSize = 15.sp)
             }
         }
     }
 
     @Composable
     fun ListCharacter(character: List<Character>, modifier: Modifier = Modifier) {
-        LazyColumn(modifier = modifier) {
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp, vertical = 16.dp)
+        ) {
             items(character) {character ->
                 CharacterCard(character = character)
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
@@ -97,6 +106,7 @@ class MainActivity : ComponentActivity() {
     fun CharacterCard(character: Character) {
         Card (
             modifier = Modifier
+                .fillMaxWidth()
                 .clickable {
                     val intent = Intent(this, DetailActivity::class.java)
                     intent.putExtra("CHARACTER", character)
@@ -105,7 +115,9 @@ class MainActivity : ComponentActivity() {
             Column (
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)){
+                    .padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+                ){
                 AsyncImage(
                     model = ImageRequest.Builder(context = LocalContext.current)
                         .data(character.webformatURL)
@@ -115,12 +127,18 @@ class MainActivity : ComponentActivity() {
                     contentScale = ContentScale.Crop,
 
                     modifier = Modifier
-                        .width(400.dp)
-                        .height(200.dp)
+                        .width(280.dp)
+                        .height(150.dp)
                         .clip(MaterialTheme.shapes.medium)
+                        .fillMaxWidth()
                     
                 )
-                Text(text = "Difoto Oleh: ${character.user.toString()}")
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(text = "Difoto Oleh: ${character.user.toString()}",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Blue
+                    )
 
             }
         }
